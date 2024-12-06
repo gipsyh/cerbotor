@@ -2,8 +2,8 @@
 2 sort bitvec 2
 3 zero 1
 4 zero 2
-5 input 1 =5 transition
-9 state 2 =9 data
+5 input 1 =5
+9 state 2 =9
 10 init 2 9 4
 11 not 2 9
 12 ite 2 5 9 11

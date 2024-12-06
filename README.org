@@ -69,7 +69,7 @@ Checkout the Dockerfile for more details or directly run the container:
 
 #+begin_src sh
 docker build -t cerbotor .
-docker run cerbotor examples/model.btor2 examples/witness.btor2
+docker run --rm cerbotor examples/model.btor2 examples/witness.btor2
 #+end_src
 ** Scripts
 In addition to cerbotor the TOOLS option builds a number of useful scripts in the build/bin directory:
