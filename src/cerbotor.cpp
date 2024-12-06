@@ -122,7 +122,6 @@ void step(const char *path, const Btor2 &witness) {
   unroll(witness);
   std::vector<int64_t> transition;
   transition.reserve(witness.num_states);
-  MSG << "bads: " << next(witness.bads)[0] << '\n';
   for (const auto &[s, n] : witness | nexts)
     transition.push_back(beq(next(s), n));
   bbad(band(                           // P0' ^ F' ^ C0' ^ C1' ^ !P1'
