@@ -80,9 +80,19 @@ void unroll(const Btor2 &btor) {
       l.sort.array.index = next(l.sort.array.index);
       l.sort.array.element = next(l.sort.array.element);
     }
-    std::vector<int64_t> args(l.nargs);
+    int64_t all_args = l.nargs;
+    // These three have "indexed" arguments.
+    // These don't count torwards nargs and
+    // should not be shifted.
+    if (l.tag == BTOR2_TAG_uext || l.tag == BTOR2_TAG_sext)
+      all_args += 1;
+    else if (l.tag == BTOR2_TAG_slice)
+      all_args += 2;
+    std::vector<int64_t> args(all_args, -1);
     for (int32_t i = 0; i < l.nargs; ++i)
       args[i] = next(l.args[i]);
+    for (int32_t i = l.nargs; i < all_args; ++i)
+      args[i] = l.args[i];
     l.args = args.data();
     Encoding::file << l;
   }
