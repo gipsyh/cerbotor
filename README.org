@@ -23,11 +23,11 @@ A witness circuit generalizes the concept of an inductive invariant.
 Instead of searching for an inductive invariant in the model itself, we find a different circuit -- the witness -- that simulates part of the model and has an inductive invariant.
 ** Witness circuits
 To check if a witness circuit is valid for a given model, Cerbotor performs five checks:
-| Reset      | $R{K} \wedge C \Rightarrow R'{K} \wedge C'$              |
-| Transition | $F{K} \wedge C0 \wedge C1 \wedge C0' \Rightarrow F'{K} \wedge C1'$ |
-| Property   | $(C \wedge C') \Rightarrow (P \wedge P')$                |
-| Base       | $R' \wedge C' \Rightarrow P'$                       |
-| Step       | $P0' \wedge F' \wedge C0' \wedge C1' \Rightarrow P1'$         |
+| Reset      | R{K} \wedge C \Rightarrow R'{K} \wedge C'              |
+| Transition | F{K} \wedge C0 \wedge C1 \wedge C0' \Rightarrow F'{K} \wedge C1' |
+| Property   | (C \wedge C') \Rightarrow (P \wedge P')                |
+| Base       | R' \wedge C' \Rightarrow P'                       |
+| Step       | P0' \wedge F' \wedge C0' \wedge C1' \Rightarrow P1'         |
 Where $R$ encodes that states are in their reset, $C$ is the conjunction of all constraints, $P$ is the property, i.e., all bads are 0, and $F$ encodes that that the states of the "1" copy are equal to the nexts of the "0" copy. When $F$ is used the other formulas have a temporal index. {K} means that the formula is limited to $K$, which is the the set of inputs and states shared between model and witness.
 
 If a witness and model pass the first three checks, the witness is said to simulate the model.
@@ -73,7 +73,7 @@ docker run cerbotor examples/model.btor2 examples/witness.btor2
 #+end_src
 ** Scripts
 In addition to cerbotor the TOOLS option builds a number of useful scripts in the build/bin directory:
-- ./check <model> <witness> :: checks the first line of the witness to decide if it is a Btor2 model to certify safety or a Btor2 trace to certify unsafety. Then runs cerbotor and bitwuzla or btorsim respectively.
+- check <model> <witness> :: checks the first line of the witness to decide if it is a Btor2 model to certify safety or a Btor2 trace to certify unsafety. Then runs cerbotor and bitwuzla or btorsim respectively.
 - generate [seed] :: Produces a random Btor2 model. Ensures that it is compatible with the current version of btor2sim.
 - certified <model checker> <model> :: Runs the model checker and checks the produced certificate. The model checker is expected to take the first argument as the model path and write a (sat or unsat) certificate the the path provided in the second argument.
 - fuzzer <model checker> [threads] :: Executes the model checker on random Btor2 models in multiple threads and checks the produced certificates. Error inducing models are collected in build/bugs.
