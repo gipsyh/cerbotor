@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(cerbotor VERSION 0.1.0)
+project(cerbotor VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 23)
 file(GLOB headers CONFIGURE_DEPENDS src/*.hpp)
 file(GLOB sources CONFIGURE_DEPENDS src/*.cpp)
@@ -28,7 +28,3 @@ endif()
 
 include(dep/btor2tools/btor2parser_lib.cmake)
 target_link_libraries(cerbotor btor2parser)
-
-
-
-add_custom_target(check DEPENDS cerbotor COMMAND ./bin/check bug.btor2 witness.btor2 .)

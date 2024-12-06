@@ -8,6 +8,7 @@ RUN \
 COPY . /cerbotor
 WORKDIR /cerbotor
 RUN \
+  rm -rf build && \
   cmake -DCMAKE_BUILD_TYPE=Release -DTOOLS=ON -B build && \
   make -j$(nproc) -C build
 
