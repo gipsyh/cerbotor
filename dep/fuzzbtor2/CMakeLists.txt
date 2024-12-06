@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.5)
+project(fuzzbtor2)
+set(CMAKE_BUILD_TYPE "Release")
+set(src main.cpp generator.cpp random.cpp syntax_tree.cpp util.cpp)
+add_executable(fuzzbtor2 ${src})
+target_compile_options(fuzzbtor2 PRIVATE -w)

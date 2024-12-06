@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+fuzzbtor2="$bin/fuzzbtor2"
+btorsim="$bin/btorsim"
+for i in fuzzbtor2 btorsim; do
+    [ ! -x "${!i}" ] && echo "$(basename "$0"): missing executable $i (${!i})" >&2 && exit 1
+done
+[ $# -lt 0 ] && echo "usage: $(basename "$0") [<seed>]" && exit 0
+
+mkdir -p ${TMPDIR:-/tmp}/froleyks-cerbotor
+TMP=$(mktemp -d "${TMPDIR:-/tmp}"/froleyks-cerbotor/"$(basename "$0")"-XXXXXXXX)
+trap 'rm -rf ${TMP}; exit' EXIT HUP INT QUIT TERM
+mod="$TMP"/mod.btor2
+
+seed=$((RANDOM<<15|RANDOM))
+[ $# -gt 1 ] && seed=$2
+
+"$fuzzbtor2" --seed "$seed" > "$mod"
+# fuzzbtor2 gives up for certain seeds and not all operators are supported by btorsim
+while ! "$btorsim" "$mod" &>/dev/null; do
+    seed=$RANDOM
+    "$fuzzbtor2" --seed "$seed" > "$mod"
+done
+
+cat "$mod"
