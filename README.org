@@ -59,9 +59,11 @@ Beyond that, we demonstrate how to certify the combination of different preproce
 | Stratified Certification for K-Induction                    | Yu, Froleyks & Biere et al. | FMCAD22 |
 | Towards Compositional Hardware Model Checking Certification | Yu, Froleyks & Biere et al. | FMCAD23 |
 | Certifying Phase Abstraction                                | Froleyks, Yu & Biere et al. | IJCAR24 |
-** Installation
+** Build
 Cerbotor itself depends on make, cmake, a c++ compiler, and git to fetch the btor2tools dependency.
 With cmake -DTOOLS=ON additional tools are build, namely fuzzbtor2 and the bitvector SMT solver bitwuzla. The latter brings the additional dependencies of meson and m4.
+
+A static cerbotor binary can be build with cmake -DSTATIC=ON.
 
 Checkout the Dockerfile for more details or directly run the container:
 
