@@ -44,7 +44,10 @@ template <typename... Args> inline int64_t bor(int64_t a, Args... args) {
   return boolean_op("or", a, bor(args...));
 }
 
-inline int64_t next(int64_t id) { return id + Encoding::offset; }
+inline int64_t next(int64_t id) {
+  const int64_t sign = id < 0 ? -1 : 1;
+  return sign * (std::abs(id) + Encoding::offset);
+}
 inline std::vector<int64_t> next(const std::vector<int64_t> &v) {
   auto r = std::views::transform(v, [](int64_t id) { return next(id); });
   return std::vector<int64_t>(r.begin(), r.end());
