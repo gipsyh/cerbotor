@@ -8,10 +8,14 @@ done
 echo $(basename "$0"): model   "$1"
 echo $(basename "$0"): witness "$2"
 
-if "$btorsim" -c "$1" "$2"; then
+if "$btorsim" -c "$1" "$2" 2> /dev/null; then
     echo $(basename "$0"): Trace simulation passed
     exit 0
 else
+    if "$btorsim" -c "$1" "$2" 2>&1 | grep -q unsupported; then
+        echo $(basename "$0"): Giving up: Unsupported operator in trace
+        exit 0
+    fi
     echo $(basename "$0"): Error invalid trace
     exit 1
 fi

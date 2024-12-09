@@ -12,14 +12,19 @@ TMP=$(mktemp -d "${TMPDIR:-/tmp}"/froleyks-cerbotor/"$(basename "$0")"-XXXXXXXX)
 trap 'rm -rf ${TMP}; exit' EXIT HUP INT QUIT TERM
 mod="$TMP"/mod.btor2
 
-seed=$((RANDOM<<15|RANDOM))
+seed=$((RANDOM << 15 | RANDOM))
 [ $# -gt 1 ] && seed=$2
 
-"$fuzzbtor2" --seed "$seed" > "$mod"
-# fuzzbtor2 gives up for certain seeds and not all operators are supported by btorsim
-while ! "$btorsim" "$mod" &>/dev/null; do
-    seed=$RANDOM
-    "$fuzzbtor2" --seed "$seed" > "$mod"
+fail="*** FuzzBtor2: Construct completely Failed."
+echo "$fail" >"$mod"
+while grep -q "$fail" "$mod"; do
+    "$fuzzbtor2" \
+        --seed "$seed" \
+        --constraints $((RANDOM % 5)) \
+        --max-inputs $((RANDOM % 5)) \
+        --bv-states $((RANDOM % 5)) \
+        >"$mod"
+    seed=$((seed + 1))
 done
 
 cat "$mod"
