@@ -13,7 +13,7 @@ class Btor2 {
 public:
   Btor2(const char *path);
   ~Btor2();
-  int64_t size() const { return std::max(0L, btor2parser_max_id(parser)); }
+  int64_t size() const { return std::max(0L, btor2parser_max_id(parser)) + 1; }
   int64_t
   reindex(int64_t offset = 0,
           const std::vector<std::pair<int64_t, int64_t>> &pre_indexed = {});
