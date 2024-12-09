@@ -20,7 +20,7 @@ public:
   std::vector<std::pair<Btor2Line, int64_t>> get_simulation();
   std::vector<std::pair<Btor2Line, int64_t>>
   get_default_simulation(const Btor2 &simulated);
-  void drop(int64_t id) { btor2parser_delete_by_id(parser, id); }
+  void drop(int64_t id) { btor2parser_drop_by_id(parser, id); }
   Btor2Line at(int64_t id) { return *btor2parser_get_line_by_id(parser, id); }
 
   int64_t max_id{}, num_states{}, num_inputs{};

@@ -1,22 +1,59 @@
 diff --git a/src/btor2parser/btor2parser.c b/src/btor2parser/btor2parser.c
-index 153f289..fb02fdb 100644
+index 153f289..d7b1b00 100644
 --- a/src/btor2parser/btor2parser.c
 +++ b/src/btor2parser/btor2parser.c
-@@ -1554,6 +1554,20 @@ btor2parser_get_line_by_id (Btor2Parser *bfr, int64_t id)
+@@ -28,6 +28,8 @@ struct Btor2Parser
+   Btor2Line **table, *new_line;
+   Btor2Sort **stable;
+   int64_t sztable, ntable, szstable, nstable, szbuf, nbuf, lineno;
++  Btor2Line **dropped;
++  int64_t ndropped, szdropped;
+   int32_t saved;
+   char *buf;
+   FILE *file;
+@@ -104,6 +106,21 @@ reset_bfr (Btor2Parser *bfr)
+     bfr->table  = 0;
+     bfr->ntable = bfr->sztable = 0;
+   }
++  if (bfr->dropped)
++  {
++    for (i = 0; i < bfr->ndropped; i++)
++    {
++      Btor2Line *l = bfr->dropped[i];
++      if (!l) continue;
++      if (l->symbol) free (l->symbol);
++      if (l->constant) free (l->constant);
++      free (l->args);
++      free (l);
++    }
++    free (bfr->dropped);
++    bfr->dropped  = 0;
++    bfr->ndropped = bfr->szdropped = 0;
++  }
+   if (bfr->buf)
+   {
+     free (bfr->buf);
+@@ -1554,6 +1571,26 @@ btor2parser_get_line_by_id (Btor2Parser *bfr, int64_t id)
    return id2line_bfr (bfr, id);
  }
  
++static void
++pusht_dropped (Btor2Parser *bfr, Btor2Line *l)
++{
++  if (bfr->ndropped >= bfr->szdropped)
++  {
++    bfr->szdropped = bfr->szdropped ? 2 * bfr->szdropped : 1;
++    bfr->dropped =
++        btor2parser_realloc (bfr->dropped, bfr->szdropped * sizeof *bfr->dropped);
++  }
++  bfr->dropped[bfr->ndropped++] = l;
++}
++
 +void
-+btor2parser_delete_by_id (Btor2Parser *bfr, int64_t id)
++btor2parser_drop_by_id (Btor2Parser *bfr, int64_t id)
 +{
 +  int64_t absid = labs (id);
-+  if (!absid || absid >= bfr->ntable) return;
-+  Btor2Line *l = bfr->table[absid];
-+  if (!l) return;
-+  if (l->symbol) free (l->symbol);
-+  if (l->constant) free (l->constant);
-+  free (l->args);
-+  free (l);
++  pusht_dropped(bfr, bfr->table[absid]);
 +  bfr->table[absid] = 0;
 +}
 +
@@ -24,14 +61,14 @@ index 153f289..fb02fdb 100644
  btor2parser_max_id (Btor2Parser *bfr)
  {
 diff --git a/src/btor2parser/btor2parser.h b/src/btor2parser/btor2parser.h
-index f29ad6a..b290411 100644
+index f29ad6a..298d24a 100644
 --- a/src/btor2parser/btor2parser.h
 +++ b/src/btor2parser/btor2parser.h
 @@ -203,6 +203,7 @@ Btor2Line *btor2parser_iter_next (Btor2LineIterator *);
   */
  int64_t btor2parser_max_id (Btor2Parser *);
  Btor2Line *btor2parser_get_line_by_id (Btor2Parser *, int64_t id);
-+void btor2parser_delete_by_id (Btor2Parser *bfr, int64_t id);
++void btor2parser_drop_by_id (Btor2Parser *bfr, int64_t id);
  
  /*------------------------------------------------------------------------*/
  
