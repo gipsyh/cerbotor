@@ -73,8 +73,9 @@ Btor2::reindex(int64_t offset,
   };
   for (auto &l : *this) {
     if (l.tag == BTOR2_TAG_init || l.tag == BTOR2_TAG_next ||
-        l.tag == BTOR2_TAG_bad || l.tag == BTOR2_TAG_constraint ||
-        l.tag == BTOR2_TAG_fair || l.tag == BTOR2_TAG_justice) {
+        l.tag == BTOR2_TAG_bad || l.tag == BTOR2_TAG_output ||
+        l.tag == BTOR2_TAG_constraint || l.tag == BTOR2_TAG_fair ||
+        l.tag == BTOR2_TAG_justice) {
       if (l.tag == BTOR2_TAG_bad) bads.push_back(map.at(l.args[0]));
       if (l.tag == BTOR2_TAG_constraint)
         constraints.push_back(map.at(l.args[0]));
