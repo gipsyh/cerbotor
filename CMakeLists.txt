@@ -12,19 +12,29 @@ option(STATIC "Build static binary" OFF)
 add_executable(cerbotor ${sources})
 target_compile_options(cerbotor PRIVATE -DGITID="${GIT_ID}")
 target_compile_options(cerbotor PRIVATE -DVERSION="${PROJECT_VERSION}")
-if(STATIC)
-  set(BUILD_SHARED_LIBS OFF)
-  set_target_properties(cerbotor PROPERTIES LINK_FLAGS "-static")
-endif()
+include(dep/btor2tools/btor2parser_lib.cmake)
+target_link_libraries(cerbotor btor2parser)
 
 if(TOOLS)
   include(dep/fuzzbtor2/fuzzbtor2_bin.cmake)
   include(dep/bitwuzla/bitwuzla_bin.cmake)
   set(BUILD_TOOLS ON)
-  add_scripts(check_unsafe check_safe check certified generate random fuzz fuzzer status)
+  add_scripts(
+    check_unsafe
+    check_safe
+    check
+    certified
+    generate
+    random
+    fuzz
+    fuzzer
+    status)
 else()
   set(BUILD_TOOLS OFF CACHE BOOL "Build btor2parser tools")
 endif()
 
-include(dep/btor2tools/btor2parser_lib.cmake)
-target_link_libraries(cerbotor btor2parser)
+if(STATIC)
+  set(BUILD_SHARED_LIBS OFF)
+  set_target_properties(cerbotor PROPERTIES LINK_FLAGS "-static")
+  set_target_properties(btorsim PROPERTIES LINK_FLAGS "-static")
+endif()
