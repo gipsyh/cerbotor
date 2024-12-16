@@ -30,8 +30,6 @@ while true; do
             ((unsafe += 1))
         elif grep -q 'certified: model checker timeout' "$out"; then
             ((tout += 1))
-        elif grep -q 'check: valid witness' "$out"; then
-            ((tout += 1))
         else
             echo "$(basename "$0"): ERROR in fuzzing setup"
             exit 1
