@@ -1,7 +1,7 @@
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 execute_process(
-  COMMAND bash "-c" "git show|head -1|awk '{print $2}'"
+  COMMAND sh "-c" "git rev-parse --revs-only HEAD --"
   OUTPUT_STRIP_TRAILING_WHITESPACE
   OUTPUT_VARIABLE GIT_ID
   ERROR_QUIET)
