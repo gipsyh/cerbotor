@@ -73,18 +73,18 @@ private:
 std::ostream &operator<<(std::ostream &os, const Btor2Line &line);
 std::ostream &operator<<(std::ostream &os, const Btor2 &circuit);
 
-static auto filter(const Btor2Tag tag) {
+constexpr auto filter(const Btor2Tag tag) {
   return std::views::filter([tag](const Btor2Line &l) { return l.tag == tag; });
 }
-static auto states = filter(BTOR2_TAG_state);
-static auto inputs = filter(BTOR2_TAG_input);
+constexpr auto states = filter(BTOR2_TAG_state);
+constexpr auto inputs = filter(BTOR2_TAG_input);
 
-static auto inits = states | std::views::transform([](const auto &l) {
+constexpr auto inits = states | std::views::transform([](const auto &l) {
                       return std::pair{l.id, l.init};
                     }) |
                     std::views::filter([](const auto &p) { return p.second; });
 
-static auto nexts = states | std::views::transform([](const auto &l) {
+constexpr auto nexts = states | std::views::transform([](const auto &l) {
                       return std::pair{l.id, l.next};
                     }) |
                     std::views::filter([](const auto &p) { return p.second; });
