@@ -1,9 +1,15 @@
-FROM ubuntu:24.04
+FROM alpine:3.21
 
-RUN \
-  apt-get update && \
-  apt-get install -y --no-install-recommends cmake make g++ git meson m4 ca-certificates && \
-  apt-get clean
+RUN apk update && \
+    apk add --no-cache \
+        bash \
+        build-base \
+        cmake \
+        git \
+        meson \
+        m4 \
+        ca-certificates \
+        coreutils
 
 COPY . /cerbotor
 WORKDIR /cerbotor
