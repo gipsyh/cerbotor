@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+bin="$(cd -- "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)"
 BUGS="$bin/../bugs"
 fuzz="$bin/fuzz"
 certified="$bin/certified"

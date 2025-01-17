@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 FAILURES=10 # number of failures before exit
-bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+bin="$(cd -- "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)"
 random="$bin/random"
 for i in random; do
     [ ! -x "${!i}" ] && echo "$(basename "$0"): missing executable $i (${!i})" >&2 && exit 1

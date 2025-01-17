@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+bin="$(cd -- "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)"
 fuzzbtor2="$bin/fuzzbtor2"
 btorsim="$bin/btorsim"
 for i in fuzzbtor2 btorsim; do

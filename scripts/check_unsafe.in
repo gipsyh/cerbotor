@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+bin="$(cd -- "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)"
 btorsim="$bin/btorsim"
 for i in btorsim; do
     [ ! -x "${!i}" ] && echo "$(basename "$0"): missing executable $i (${!i})" >&2 && exit 1

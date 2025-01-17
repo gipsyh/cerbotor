@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-bin=$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
+bin="$(cd -- "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd -P)"
 check_safe="$bin"/check_safe
 check_unsafe="$bin"/check_unsafe
 for i in check_safe check_unsafe; do
